@@ -1,0 +1,23 @@
+import FreeCAD
+import singlesource
+
+def showText(title, text):
+    from PySide import QtGui
+    QtGui.QMessageBox.information(None, title, text)
+
+def fileListing(files):
+    return '\n'.join("\t"+f for f in files)
+
+# TODO: allow specifying export directory in UI
+def macromain():
+    doc = FreeCAD.ActiveDocument
+    docdir = os.path.dirname(doc.FileName)
+    exportdir = os.path.join(docdir, 'export/')
+
+    files = singlesource.freecad.exportDocument(doc, exportdir)
+    showText('Project export', "Exported %d files to %s\n%s" % ( len(files), exportdir, fileListing(files)))
+    print files
+
+if __name__ == '__main__':
+    if FreeCAD.GuiUp:
+        macromain()
